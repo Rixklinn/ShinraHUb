@@ -3,7 +3,7 @@ local Frame = Instance.new("Frame")
 local Button1 = Instance.new("TextButton")
 local Button2 = Instance.new("TextButton")
 local Button3 = Instance.new("TextButton")
-local ToggleButton = Instance.new("TextButton") -- Novo botão para ativar/desativar a HUD
+local ToggleButton = Instance.new("TextButton") -- Botão de alternância
 local UnlockFrame = Instance.new("Frame")
 local UnlockButton = Instance.new("TextButton")
 local UnlockTextBox = Instance.new("TextBox")
@@ -29,10 +29,10 @@ end
 -- Configurar a GUI
 ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 Frame.Parent = ScreenGui
-Frame.Size = UDim2.new(0, 300, 0, 200) -- Tamanho do painel
-Frame.Position = UDim2.new(0.5, -150, 0.5, -100) -- Posição central
-Frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30) -- Cor de fundo
-Frame.Visible = false -- Inicialmente bloqueada
+Frame.Size = UDim2.new(0, 300, 0, 200)
+Frame.Position = UDim2.new(0.5, -150, 0.5, -100)
+Frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+Frame.Visible = false
 
 -- Configurar a HUD de Desbloqueio
 UnlockFrame.Parent = ScreenGui
@@ -64,19 +64,18 @@ UnlockButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
 UnlockButton.Text = "Desbloquear"
 UnlockButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 
--- Código para desbloquear a HUD (pode ser alterado conforme necessário)
+-- Código para desbloquear a HUD
 local unlockCode = "1234"
 
--- Quando o botão de desbloquear for clicado
 UnlockButton.MouseButton1Click:Connect(function()
     if UnlockTextBox.Text == unlockCode then
-        unlockHUD() -- Desbloqueia a HUD
+        unlockHUD()
     else
         UnlockTextBox.Text = "" -- Limpa o campo se o código estiver errado
     end
 end)
 
--- Configurar Botões da HUD (inicialmente invisível)
+-- Configurar Botões da HUD
 Button1.Parent = Frame
 Button1.Size = UDim2.new(1, 0, 0, 50)
 Button1.Position = UDim2.new(0, 0, 0, 10)
@@ -107,7 +106,7 @@ Button3.Text = "Script 3"
 -- Novo botão para ativar/desativar a HUD
 ToggleButton.Parent = ScreenGui
 ToggleButton.Size = UDim2.new(0, 200, 0, 50)
-ToggleButton.Position = UDim2.new(0.5, -100, 0, 200)  -- Posição abaixo da HUD
+ToggleButton.Position = UDim2.new(0.5, -100, 0, 200)
 ToggleButton.BackgroundColor3 = Color3.fromRGB(0, 100, 255)
 ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 ToggleButton.Font = Enum.Font.SourceSansBold
@@ -141,6 +140,37 @@ ToggleButton.InputEnded:Connect(function(input)
     end
 end)
 
+-- Tornar a HUD movível
+local draggingHUD = false
+local dragStartHUD, startPosHUD
+
+Frame.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        draggingHUD = true
+        dragStartHUD = input.Position
+        startPosHUD = Frame.Position
+        input.Consumed = true
+    end
+end)
+
+Frame.InputChanged:Connect(function(input)
+    if draggingHUD and input.UserInputType == Enum.UserInputType.MouseMovement then
+        local delta = input.Position - dragStartHUD
+        Frame.Position = UDim2.new(startPosHUD.X.Scale, startPosHUD.X.Offset + delta.X, startPosHUD.Y.Scale, startPosHUD.Y.Offset + delta.Y)
+    end
+end)
+
+Frame.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        draggingHUD = false
+    end
+end)
+
+-- Quando o botão de alternar for clicado
+ToggleButton.MouseButton1Click:Connect(function()
+    toggleHUD() -- Alterna a visibilidade da HUD
+end)
+
 -- Função para executar o Script 1 (LyzerHub)
 Button1.MouseButton1Click:Connect(function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Kazeruy/LyzerHub/main/ScriptMain"))()
@@ -157,9 +187,4 @@ end)
 Button3.MouseButton1Click:Connect(function()
     loadstring(game:HttpGet("URL_DO_SCRIPT_3", true))()  -- Substitua com a URL do seu terceiro script
     hideHUD()  -- Esconde a HUD após ativar o script
-end)
-
--- Quando o botão de alternar for clicado
-ToggleButton.MouseButton1Click:Connect(function()
-    toggleHUD() -- Alterna a visibilidade da HUD
 end)
