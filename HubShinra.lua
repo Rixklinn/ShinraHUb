@@ -102,7 +102,7 @@ Button2.MouseButton1Click:Connect(function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/ByNami/dkhub/main/Script", true))()
 end)
 
--- Função para executar o Script 3
+-- Função para executar o Script 3 (Substitua pela URL do terceiro script)
 Button3.MouseButton1Click:Connect(function()
-    loadstring(game:HttpGet("URL_DO_SCRIPT_3", true))() -- Coloque a URL do terceiro script aqui
+    loadstring(game:HttpGet("URL_DO_SCRIPT_3", true))() -- Substitua com a URL do seu terceiro script
 end)
