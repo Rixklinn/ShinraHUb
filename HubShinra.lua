@@ -14,6 +14,11 @@ local function unlockHUD()
     Frame.Visible = true
 end
 
+-- Função para esconder a HUD
+local function hideHUD()
+    Frame.Visible = false
+end
+
 -- Configurar a GUI
 ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 Frame.Parent = ScreenGui
@@ -95,14 +100,17 @@ Button3.Text = "Script 3"
 -- Função para executar o Script 1 (LyzerHub)
 Button1.MouseButton1Click:Connect(function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/Kazeruy/LyzerHub/main/ScriptMain"))()
+    hideHUD()  -- Esconde a HUD após ativar o script
 end)
 
 -- Função para executar o Script 2 (DKHub)
 Button2.MouseButton1Click:Connect(function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/ByNami/dkhub/main/Script", true))()
+    hideHUD()  -- Esconde a HUD após ativar o script
 end)
 
--- Função para executar o Script 3 (Substitua pela URL do terceiro script)
+-- Função para executar o Script 3
 Button3.MouseButton1Click:Connect(function()
-    loadstring(game:HttpGet("URL_DO_SCRIPT_3", true))() -- Substitua com a URL do seu terceiro script
+    loadstring(game:HttpGet("URL_DO_SCRIPT_3", true))()  -- Substitua com a URL do seu terceiro script
+    hideHUD()  -- Esconde a HUD após ativar o script
 end)
